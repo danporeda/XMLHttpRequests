@@ -64,19 +64,30 @@
 // firstReq.open('GET', 'https://swapi.dev/api/planets/');
 // firstReq.send();
 // console.log("REQUEST SENT");
+const randoPlanet = Math.floor(Math.random() * 10);
+fetch('https://swapi.dev/api/planets/')
+    .then((response) => {
+        if (!response.ok) 
+            throw new Error(`Status Code Error: ${response.status}`);
 
-const prom = fetch('https://swapi.dev/api/planets/')
-.then((res) => {
-    if (!res.ok) 
-        throw new Error(`Status Code Error: ${res.status}`);
- 
-        res.json().then((data) => {
-            for (let planet of data.results) {
-                console.log(planet.name);
-            }
-        });
-})
-.catch((err) => {
-    console.log('SOMETHING WENT WRONG WITH FETCH');
-    console.log(err);
-});
+        return response.json();
+    })
+    .then((data) => {
+        console.log('FETCHED ALL 10 PLANETS');
+        const filmURL = data.results[randoPlanet].films[0];
+        return fetch(filmURL);
+    })
+    .then((response) => {
+        if (!response.ok) 
+            throw new Error(`Status Code Error: ${response.status}`);
+
+        return response.json();
+    })
+    .then((data) => {
+        console.log(`FETCHED FIRST FILM OF ${randoPlanet} PLANET IN PLANETS ARRAY:`);
+        console.log(data.title);
+    })
+    .catch((err) => {
+        console.log('SOMETHING WENT WRONG WITH FETCH');
+        console.log(err);
+    });
