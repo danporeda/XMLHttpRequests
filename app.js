@@ -65,7 +65,7 @@
 // firstReq.send();
 // console.log("REQUEST SENT");
 
-const prom = fetch('https://swapi.dev/api/planetss/')
+const prom = fetch('https://swapi.dev/api/planets/')
 .then((res) => {
     if (!res.ok) 
         throw new Error(`Status Code Error: ${res.status}`);
