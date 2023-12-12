@@ -67,39 +67,65 @@
 
 // const randoPlanet = Math.floor(Math.random() * 10);
 
-const checkStatusAndParse = (response) => {
-    if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
 
-        return response.json();
-};
+/* Refactored with fetch() */
 
-const printPlanets = (data) => {
-    console.log('Loaded 10 more planets...');
+// const checkStatusAndParse = (response) => {
+//     if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
+
+//         return response.json();
+// };
+
+// const printPlanets = (data) => {
+//     console.log('Loaded 10 more planets...');
+//     for (let planet of data.results) {
+//         console.log(planet.name);
+//     }
+//     // const p = new Promise((resolve, reject) => {
+//     //     resolve(data);
+//     // })
+//     // return p;
+//     return Promise.resolve(data.next);
+// }
+
+// const fetchNextPlanets = (url = 'https://swapi.dev/api/planets/') => {
+//     return fetch(url);
+// }
+
+// fetchNextPlanets()
+//     .then(checkStatusAndParse)
+//     .then(printPlanets)
+//     .then(fetchNextPlanets)
+//     .then(checkStatusAndParse)
+//     .then(printPlanets)
+//     .then(fetchNextPlanets)
+//     .then(checkStatusAndParse)
+//     .then(printPlanets)
+//     .catch((err) => {
+//         console.log('SOMETHING WENT WRONG WITH FETCH');
+//         console.log(err);
+//     });
+
+
+/* refactored with Axios Library */
+
+const getPlanets = (url = 'https://swapi.dev/api/planets/') => {
+   return axios.get(url);
+}
+
+const printPlanets = (({ data }) => {
+    console.log('Printing 10 Planets...');
     for (let planet of data.results) {
         console.log(planet.name);
     }
-    // const p = new Promise((resolve, reject) => {
-    //     resolve(data);
-    // })
-    // return p;
-    return Promise.resolve(data.next);
-}
+    console.log(data.next);
+    return axios.get(data.next);
+})
 
-const fetchNextPlanets = (url = 'https://swapi.dev/api/planets/') => {
-    return fetch(url);
-}
-
-fetchNextPlanets()
-    .then(checkStatusAndParse)
-    .then(printPlanets)
-    .then(fetchNextPlanets)
-    .then(checkStatusAndParse)
-    .then(printPlanets)
-    .then(fetchNextPlanets)
-    .then(checkStatusAndParse)
-    .then(printPlanets)
-    .catch((err) => {
-        console.log('SOMETHING WENT WRONG WITH FETCH');
-        console.log(err);
-    });
-
+getPlanets()
+.then(printPlanets)
+.then(printPlanets)
+.then(printPlanets)
+.catch((err) => {
+    console.log(`Error code: ${err}`);
+})
