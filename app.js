@@ -102,3 +102,4 @@ fetchNextPlanets()
         console.log('SOMETHING WENT WRONG WITH FETCH');
         console.log(err);
     });
+
