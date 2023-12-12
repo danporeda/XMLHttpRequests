@@ -110,7 +110,8 @@
 /* refactored with Axios Library */
 
 const getPlanets = (url = 'https://swapi.dev/api/planets/') => {
-   return axios.get(url);
+    console.log(url);
+    return axios.get(url);
 }
 
 const printPlanets = (({ data }) => {
@@ -118,13 +119,14 @@ const printPlanets = (({ data }) => {
     for (let planet of data.results) {
         console.log(planet.name);
     }
-    console.log(data.next);
-    return axios.get(data.next);
+    return Promise.resolve(data.next);
 })
 
 getPlanets()
 .then(printPlanets)
+.then(getPlanets)
 .then(printPlanets)
+.then(getPlanets)
 .then(printPlanets)
 .catch((err) => {
     console.log(`Error code: ${err}`);
